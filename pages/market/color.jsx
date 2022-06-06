@@ -10,26 +10,33 @@ const { Search } = Input;
 
 
 const Color = ({data}) => {
-    const renderSomeContent = (type, value) => {
-        
-    }
     const [colorList, setComputersList] = React.useState([]);
 
+
     const filtrObj = (item) => {
-        console.log(item);
+
         const newArr = colorList.filter((elem) => elem.group == item.group)
         setComputersList(newArr)
     }
+ 
+    const [value, setValue] = React.useState('')
+    const filtSerach = colorList.filter(item => {
 
+            
+            return item.names == value 
 
+       
+    })
+
+    
 
 
     React.useEffect(() => {
         setComputersList(data)
     }, [])
-    return (
-        <Space direction={'horizontal'}>
-            {colorList.map((item, index) => {
+    return (<Space direction={'horizontal'}>
+    
+            {filtSerach.map((item, index) => {
                 return (
                     <Card
                         style={{
@@ -42,9 +49,7 @@ const Color = ({data}) => {
                             />
                         }
                         actions={[
-                            <PlusOutlined onClick={() => createAnotherObj(item)} key="plus"/>,
                             <DeleteOutlined onClick={() => filtrObj(item)} key="edit"/>,
-                            <EditOutlined onClick={() => editObj(index)} key={'edit'}/>
                         ]}
                     >
                         <Meta
@@ -54,21 +59,26 @@ const Color = ({data}) => {
                 )
             })}
 
+
+
+        <Search
+            placeholder="поиск"
+            onChange={(event) => setValue(event.target.value)}
+    
+                style={{
+              width: 200,
+            }}
+        /> 
         </Space>
+            
     );
+
+
+
+
 };
 
-const Poisk = () => (
-    <Space direction="vertical">
-      <Search
-        placeholder="input search text"
-        onSearch={onSearch}
-        style={{
-          width: 200,
-        }}
-      /> 
-    </Space>
-  );
+
 
 export async function getServerSideProps() {
     const res = await fetch(`http://localhost:3000/api/hello2`)
