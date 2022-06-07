@@ -9,6 +9,10 @@ const {Meta} = Card;
 const { Search } = Input;
 
 
+
+
+
+
 const Color = ({data}) => {
     const [colorList, setComputersList] = React.useState([]);
 
@@ -17,17 +21,30 @@ const Color = ({data}) => {
 
         const newArr = colorList.filter((elem) => elem.group == item.group)
         setComputersList(newArr)
+        console.log(setComputersList)
     }
- 
+  
     const [value, setValue] = React.useState('')
     const filtSerach = colorList.filter(item => {
 
+        if (item.names == value){
             
-            return item.names == value 
+           return (item.group)    
+        } 
+         
+    });
 
-       
-    })
-
+    const createAnotherObj = (item) => {
+        //const newArr = [...computersList,item]
+        //setComputersList(newArr)
+    
+        //setComputersList((prev)=>{
+        //    return [...prev,item]
+        //})
+    
+        setComputersList([...colorList, item])
+    }
+    
     
 
 
@@ -36,7 +53,7 @@ const Color = ({data}) => {
     }, [])
     return (<Space direction={'horizontal'}>
     
-            {filtSerach.map((item, index) => {
+            {colorList.map((item, index) => {
                 return (
                     <Card
                         style={{
@@ -50,6 +67,7 @@ const Color = ({data}) => {
                         }
                         actions={[
                             <DeleteOutlined onClick={() => filtrObj(item)} key="edit"/>,
+                            <PlusOutlined onClick={() => createAnotherObj(item)} key="plus"/>,
                         ]}
                     >
                         <Meta
